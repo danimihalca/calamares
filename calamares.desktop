@@ -2,10 +2,10 @@
 Type=Application
 Version=1.0
 Name=Calamares
-GenericName=System Installer
+GenericName=Kogaion System Installer
 TryExec=calamares
 Exec=pkexec /usr/bin/calamares
-Comment=Calamares — System Installer
+Comment=Calamares — Kogaion System Installer
 Icon=calamares
 Terminal=false
 StartupNotify=false

@@ -1,0 +1,26 @@
+---
+componentName:  kogaion_branding
+
+strings:
+    productName:         Kogaion Linux
+    shortProductName:    Kogaion
+    version:             2.0
+    shortVersion:        2.0
+    versionedName:       Kogaion Linux 2.0
+    shortVersionedName:  Kogaion 2.0
+    bootloaderEntryName: Kogaion
+    productUrl:          http://rogentos.ro/
+    supportUrl:          http://rogentos.ro/bugs/
+    knownIssuesUrl:      http://rogentos.ro/#about/
+    releaseNotesUrl:     http://rogentos.ro/#about/
+
+images:
+    productLogo:         "kogaion.png"
+    productIcon:         "kogaion.png"
+
+slideshow:               "show.qml"
+
+style:
+   sidebarBackground:    "#292F34"
+   sidebarText:          "#FFFFFF"
+   sidebarTextSelect:    "#292F34"
