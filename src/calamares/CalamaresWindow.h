@@ -19,13 +19,7 @@
 #ifndef CALAMARESWINDOW_H
 #define CALAMARESWINDOW_H
 
-#include <QPointer>
 #include <QWidget>
-
-namespace Calamares
-{
-class DebugWindow;
-}
 
 class CalamaresWindow : public QWidget
 {
@@ -34,8 +28,6 @@ public:
     CalamaresWindow( QWidget* parent = nullptr );
     virtual ~CalamaresWindow() {}
 
-private:
-    QPointer< Calamares::DebugWindow > m_debugWindow;
 };
 
 #endif //CALAMARESWINDOW_H
