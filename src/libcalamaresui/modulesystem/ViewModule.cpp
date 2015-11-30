@@ -52,7 +52,7 @@ ViewModule::loadSelf()
         m_viewStep = qobject_cast< ViewStep* >( m_loader->instance() );
         if ( !m_viewStep )
         {
-            cLog() << Q_FUNC_INFO << m_loader->errorString();
+            cLog() << Q_FUNC_INFO << " "<< name() <<" "<< m_loader->errorString();
             return;
         }
         m_viewStep->setConfigurationMap( m_configurationMap );

@@ -91,6 +91,7 @@ Module::fromDescriptorFile( const QString& path )
 
             if ( typeString == "view" && intfString == "qtplugin" )
             {
+                cLog() << "VIEWMODULE: " << path;
                 m = new ViewModule();
             }
             else if ( typeString == "job" )

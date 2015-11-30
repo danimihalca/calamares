@@ -1,0 +1,5 @@
+name:       "addons"
+type:       "view"
+interface:  "qtplugin"
+load:       "libcalamares_viewmodule_addons.so"
+
