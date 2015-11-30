@@ -18,7 +18,7 @@
 
 AddonsViewPage::AddonsViewPage(AddonModel& model, QWidget* pParent) :
     QWidget(pParent),
-    m_model(model),
+//    m_model(model),
     m_scrollArea(new QScrollArea(this))
 {
     QLayout* layout = new QVBoxLayout( this );
@@ -74,7 +74,7 @@ AddonsViewPage::AddonsViewPage(AddonModel& model, QWidget* pParent) :
 
 
     auto lv = new QListView(m_scrollArea);
-   lv->setModel(&m_model);
+   lv->setModel(&model);
    lv->setSelectionMode(QListView::NoSelection);
     lv->setMouseTracking(false);
     m_scrollArea->setWidget(lv);
@@ -91,7 +91,7 @@ AddonsViewPage::AddonsViewPage(AddonModel& model, QWidget* pParent) :
     ad->setParent(lv);
     lv->setItemDelegate(ad);
 
-    connect(lv, &QListView::clicked, &m_model, &AddonModel::onItemClicked);
+    connect(lv, &QListView::clicked, &model, &AddonModel::onItemClicked);
 //    connect(&m_model, &AddonModel::ItemClicked, ad, &AddonDelegate::onItemClicked);
 
 

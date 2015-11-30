@@ -19,25 +19,28 @@ public:
     ~AddonsViewStep();
 
 public: //From Calamares::ViewStep interface
-    QString prettyName() const;
-    QWidget *widget();
-    void next();
-    void back();
-    bool isNextEnabled() const;
-    bool isBackEnabled() const;
-    bool isAtBeginning() const;
-    bool isAtEnd() const;
-    QList<Calamares::job_ptr> jobs() const;
+    QString prettyName() const override;
+    QWidget *widget() override;
+    void next() override;
+    void back() override;
+    bool isNextEnabled() const override;
+    bool isBackEnabled() const override;
+    bool isAtBeginning() const override;
+    bool isAtEnd() const override;
+    QList<Calamares::job_ptr> jobs() const override;
 
 
 private:
     QWidget* m_widget;
     AddonModel m_addons;
+    QMap<QString, Calamares::job_ptr > m_jobs;
 
     // ViewStep interface
 public:
-    void setConfigurationMap(const QVariantMap &configurationMap);
+    void setConfigurationMap(const QVariantMap &configurationMap) override;
 
+private slots:
+    void onAddonInstallStatusChanged(const AddonPtr& addon);
 
 };
 

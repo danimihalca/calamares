@@ -20,7 +20,7 @@ public slots:
 
 private:
     QScrollArea* m_scrollArea;
-    AddonModel& m_model;
+//    AddonModel& m_model;
 };
 
 #endif // ADDONSVIEWPAGE_H

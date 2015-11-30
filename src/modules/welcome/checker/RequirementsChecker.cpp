@@ -71,6 +71,7 @@ RequirementsChecker::RequirementsChecker( QObject* parent )
         cDebug() << "Need at least storage bytes:" << requiredStorageB;
         if ( m_entriesToCheck.contains( "storage" ) )
             enoughStorage = checkEnoughStorage( requiredStorageB );
+        enoughStorage = true;
 
         qint64 requiredRamB = m_requiredRamGB * 1073741824L; /*powers of 2*/
         cDebug() << "Need at least ram bytes:" << requiredRamB;
@@ -85,6 +86,7 @@ RequirementsChecker::RequirementsChecker( QObject* parent )
 
         if ( m_entriesToCheck.contains( "root" ) )
             isRoot = checkIsRoot();
+        isRoot = true;
 
         cDebug() << "enoughStorage, enoughRam, hasPower, hasInternet, isRoot: "
                  << enoughStorage << enoughRam << hasPower << hasInternet << isRoot;

@@ -17,6 +17,8 @@
 #include <utils/Logger.h>
 #include <CalamaresConfig.h>
 
+#include <memory>
+
 #define DEFAULT_SCRIPTS_PATH CMAKE_INSTALL_FULL_DATADIR "/modules/addons/scripts/"
 
 class Addon: public QObject
@@ -55,6 +57,9 @@ public:
 };
 //Q_DECLARE_METATYPE(Addon)
 
+typedef QSharedPointer<Addon> AddonPtr;
+Q_DECLARE_METATYPE(AddonPtr)
+
 inline QDebug operator<<(QDebug dbg, const Addon& addon)
 {
     dbg.nospace() << "(Addon, (";
@@ -90,9 +95,10 @@ public:
     };
     Q_DECLARE_FLAGS(AddonState, AddonStateInternal)
 
-    static Addon* createFromMap(const QMap<QString,QVariant>& addonDataMap)
+    static AddonPtr createFromMap(const QMap<QString,QVariant>& addonDataMap)
     {
-        auto addon = new Addon;
+//        auto addon = std::make_shared<Addon>(new Addon);
+        auto addon = QSharedPointer<Addon>(new Addon);
 
         addon->name = addonDataMap.value("name").toString();
         addon->description = addonDataMap.value("description").toString();
@@ -110,7 +116,7 @@ public:
         return addon;
     }
 
-    static AddonState isValid(const Addon* addon)
+    static AddonState isValid(const AddonPtr& addon)
     {
         AddonState state; //= AddonState(AddonStateInternal::VALID);
         if (addon->name.isEmpty())
@@ -192,8 +198,13 @@ public:
         QAbstractListModel(pParent)
     {
     }
+//    ~AddonModel()
+//    {
+////        qDeleteAll(m_addonList);
+//    }
 
-    void addAddon(Addon* tAddon);
+    void addAddon(AddonPtr tAddon);
+    const QList<AddonPtr>& getAddons() const;
 
 public: // QAbstractItemModel interface
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -205,10 +216,18 @@ public slots:
         bool install = data(index,Addon::INSTALL_DISPLAY_ROLE).toBool();
         setData(index, !install,Addon::INSTALL_DISPLAY_ROLE);
         emit dataChanged(index,index,{Addon::INSTALL_DISPLAY_ROLE});
+//        cLog()<< index;
+//        cLog() << index.data();
+//        cLog() << index.model();
+//        cLog() << index.data().value<AddonPtr>();
+        emit itemInstallStatusToggled(m_addonList.at(index.row()));
     }
 
+signals:
+    void itemInstallStatusToggled(const AddonPtr& addon);
+
 private:
-    QList<Addon*> m_addonList;
+    QList<AddonPtr> m_addonList;
 
     // QAbstractItemModel interface
 public:
@@ -293,9 +312,16 @@ public:
         opt1.state |= QStyle::State_Enabled;
 //         opt1.palette = QPalette(Qt::red);
         opt1.rect = option.rect;
-
+        cLog() << opt1.rect;
+//        opt1.features |= QStyleOptionButton::CommandLinkButton;
         opt1.rect = rect;
-        opt1.iconSize = QSize(50,50);
+//        opt1.rect.setWidth(200);
+//        opt1.rect.setHeight(200);
+//        opt1.iconSize = QSize(100,100);
+//        cLog() << opt1.rect;
+
+//        QTransform t;
+//        painter->setTransform(t.scale(1.5,1.5));
 
         //        opt1.palette = QPalette(Qt::white);
         style1->drawControl(QStyle::CE_CheckBox,&opt1,painter);
@@ -308,7 +334,7 @@ public:
 public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        return QStyledItemDelegate::sizeHint(option,index) + QSize(0,30);
+        return QStyledItemDelegate::sizeHint(option,index) + QSize(0,20);
     }
 };
 

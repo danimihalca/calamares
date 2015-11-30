@@ -2,7 +2,7 @@
 
 #include <utils/Logger.h>
 
-void AddonModel::addAddon(Addon *tAddon)
+void AddonModel::addAddon(AddonPtr tAddon)
 {
 cLog() << Q_FUNC_INFO;
 beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -10,6 +10,11 @@ beginInsertRows(QModelIndex(), rowCount(), rowCount());
     //TODO: handle/delete list items
     m_addonList.append(tAddon);
     endInsertRows();
+}
+
+const QList<AddonPtr> &AddonModel::getAddons() const
+{
+    return m_addonList;
 }
 
 int AddonModel::rowCount(const QModelIndex& /*parent*/) const

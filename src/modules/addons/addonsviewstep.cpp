@@ -3,11 +3,14 @@
 #include "addonsviewpage.h"
 
 #include <utils/Logger.h>
+#include "addonjob.h"
 
 AddonsViewStep::AddonsViewStep(QObject* pParent):
     ViewStep(pParent),
-    m_widget(nullptr)
+    m_widget(nullptr),
+    m_jobs()
 {
+    connect(&m_addons,&AddonModel::itemInstallStatusToggled, this, &AddonsViewStep::onAddonInstallStatusChanged);
 //    emit nextStatusChanged(true);
 }
 
@@ -59,7 +62,7 @@ bool AddonsViewStep::isAtEnd() const
 
 QList<Calamares::job_ptr> AddonsViewStep::jobs() const
 {
-    return QList<Calamares::job_ptr>();
+    return m_jobs.values();
 }
 
 void AddonsViewStep::setConfigurationMap(const QVariantMap &configurationMap)
@@ -69,7 +72,7 @@ void AddonsViewStep::setConfigurationMap(const QVariantMap &configurationMap)
         auto addonsList = configurationMap.value("addons").toList();
         for(const auto& item: addonsList)
         {
-            Addon* addon = AddonHelper::createFromMap(item.toMap());
+            auto addon = AddonHelper::createFromMap(item.toMap());
 //            cLog() << addon;
             AddonHelper::AddonState state = AddonHelper::isValid(addon);
 //            cLog() << state;
@@ -94,4 +97,17 @@ void AddonsViewStep::setConfigurationMap(const QVariantMap &configurationMap)
     }
     m_widget = new AddonsViewPage(m_addons);
 }
+
+void AddonsViewStep::onAddonInstallStatusChanged(const AddonPtr &addon)
+{
+    if (addon->install && !m_jobs.contains(addon->name))
+    {
+        m_jobs.insert(addon->name, Calamares::job_ptr(new AddonJob(addon)));
+    }
+    else if (!addon->install && m_jobs.contains(addon->name))
+    {
+        m_jobs.remove(addon->name);
+    }
+}
+
 

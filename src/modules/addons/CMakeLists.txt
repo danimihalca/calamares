@@ -9,6 +9,7 @@ calamares_add_plugin( ${CURRENT_MODULE_NAME}
         addonsviewstep.cpp
         addonsviewpage.cpp
         addonmodel.cpp
+        addonjob.cpp
     UI
     LINK_LIBRARIES
         calamaresui
