@@ -18,7 +18,7 @@
 #include <CalamaresConfig.h>
 
 #include <memory>
-
+                                                       ///usr/local/share/calamares
 #define DEFAULT_SCRIPTS_PATH CMAKE_INSTALL_FULL_DATADIR "/modules/addons/scripts/"
 
 class Addon: public QObject
@@ -31,11 +31,16 @@ public:
         DESCRIPTION_DISPLAY_ROLE,
         INSTALL_DISPLAY_ROLE
     };
-    Q_ENUM(AddonRoles)
+    Q_ENUMS(AddonRoles)
 
     Addon(QObject* pParent = nullptr):
         QObject(pParent)
     {
+    }
+
+    ~Addon()
+    {
+        cLog() << "Deleting addon " << name;
     }
 
 //public:
@@ -57,7 +62,8 @@ public:
 };
 //Q_DECLARE_METATYPE(Addon)
 
-typedef QSharedPointer<Addon> AddonPtr;
+//typedef QSharedPointer<Addon> AddonPtr;
+typedef Addon* AddonPtr;
 Q_DECLARE_METATYPE(AddonPtr)
 
 inline QDebug operator<<(QDebug dbg, const Addon& addon)
@@ -98,7 +104,8 @@ public:
     static AddonPtr createFromMap(const QMap<QString,QVariant>& addonDataMap)
     {
 //        auto addon = std::make_shared<Addon>(new Addon);
-        auto addon = QSharedPointer<Addon>(new Addon);
+//        auto addon = QSharedPointer<Addon>(new Addon);
+        auto addon = new Addon;
 
         addon->name = addonDataMap.value("name").toString();
         addon->description = addonDataMap.value("description").toString();
