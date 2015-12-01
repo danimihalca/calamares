@@ -296,11 +296,14 @@ public:
         else
             painter->setPen(opt.palette.color(cg, QPalette::Text));
 
-
+        QFont f = painter->font();
+        f.setBold(true);
+        painter->setFont(f);
 
         painter->drawText(QRect(rect.left() + 30, rect.top(), rect.width(), rect.height()/2 ),
-                          opt.displayAlignment,text);
-
+                          opt.displayAlignment, text);
+        f.setBold(false);
+        painter->setFont(f);
         painter->drawText(QRect(rect.left() + 30, rect.top()+rect.height()/2, rect.width(), rect.height()/2 ),
                           opt.displayAlignment, text1);
 
