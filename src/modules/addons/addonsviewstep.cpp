@@ -5,6 +5,8 @@
 #include <utils/Logger.h>
 #include "addonjob.h"
 
+#include <QVBoxLayout>
+
 AddonsViewStep::AddonsViewStep(QObject* pParent):
     ViewStep(pParent),
     m_widget(nullptr),
@@ -109,5 +111,23 @@ void AddonsViewStep::onAddonInstallStatusChanged(const AddonPtr &addon)
         m_jobs.remove(addon->name);
     }
 }
+
+
+QString AddonsViewStep::prettyStatus() const
+{
+    if (m_jobs.empty())
+    {
+        return "No additional features have been selected.";
+    }
+    {
+        QString message = "The following features will be installed: ";
+        for(auto addonName: m_jobs.keys())
+        {
+            message.append("<strong>"+addonName+"</strong> ");
+        }
+        return message;
+    }
+}
+
 
 

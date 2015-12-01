@@ -39,6 +39,7 @@ private:
 public:
     void setConfigurationMap(const QVariantMap &configurationMap) override;
 
+    QString prettyStatus() const override;
 private slots:
     void onAddonInstallStatusChanged(const AddonPtr& addon);
 
