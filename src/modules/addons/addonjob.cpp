@@ -2,6 +2,7 @@
 
 #include <utils/CalamaresUtilsSystem.h>
 
+
 AddonJob::AddonJob(AddonPtr addon):
     Calamares::Job(),
     m_addon(addon)
@@ -16,8 +17,18 @@ QString AddonJob::prettyName() const
 
 Calamares::JobResult AddonJob::exec()
 {
+    cLog() << "Installing " + m_addon->name ;
+    if (!QFileInfo::exists(m_addon->script))
+    {
+        cLog() << "Missing " + m_addon->script;
+        return Calamares::JobResult::error("Missing script");
+    }
+    cLog() << "Running " + m_addon->script;
 
-    int result =  CalamaresUtils::chrootCall({m_addon->script});
+    QString output;
+    int result =  CalamaresUtils::chrootOutput({m_addon->script}, output);
+    cLog() << "Output for " << m_addon->script << "[" << result << "]:";
+    cLog() << output;
 
     switch (result)
     {
